@@ -4,30 +4,30 @@ import org.example.model.User;
 import org.example.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import jakarta.persistence.PersistenceException;
+import org.hibernate.HibernateException;
 
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
+    private static final Logger log = LoggerFactory.getLogger(UserDaoImpl.class);
 
     @Override
     public void save(User user) {
-        Transaction transaction = null;
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            transaction = session.beginTransaction();
+        Transaction tx = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+            log.info("Saving user: {}", user);
             session.persist(user);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null && transaction.getStatus().canRollback()) {
-                transaction.rollback();
-            }
-            System.err.println("Ошибка при сохранении пользователя: " + e.getMessage());
-            e.printStackTrace();
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
+            tx.commit();
+            log.info("User saved with id: {}", user.getId());
+        } catch (PersistenceException e) {
+            if (tx != null) tx.rollback();
+            log.error("Error saving user", e);
+            throw new RuntimeException("DB error on save", e);
         }
     }
 
@@ -35,6 +35,9 @@ public class UserDaoImpl implements UserDao {
     public User findById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.get(User.class, id);
+        } catch (HibernateException e) {
+            log.error("Error finding user by id {}", id, e);
+            throw new RuntimeException("DB error on findById", e);
         }
     }
 
@@ -42,35 +45,45 @@ public class UserDaoImpl implements UserDao {
     public List<User> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("from User", User.class).list();
+        } catch (HibernateException e) {
+            log.error("Error finding all users", e);
+            throw new RuntimeException("DB error on findAll", e);
         }
     }
 
     @Override
     public void update(User user) {
-        Transaction transaction = null;
+        Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
+            tx = session.beginTransaction();
+            log.info("Updating user: {}", user);
             session.merge(user);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
+            tx.commit();
+            log.info("User updated: {}", user);
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            log.error("Error updating user", e);
+            throw new RuntimeException("DB error on update", e);
         }
     }
 
     @Override
     public void deleteById(Long id) {
-        Transaction transaction = null;
+        Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
+            tx = session.beginTransaction();
             User user = session.get(User.class, id);
             if (user != null) {
+                log.info("Deleting user: {}", user);
                 session.remove(user);
+            } else {
+                log.warn("User with id {} not found, nothing to delete", id);
             }
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            log.error("Error deleting user id {}", id, e);
+            throw new RuntimeException("DB error on delete", e);
         }
     }
 }

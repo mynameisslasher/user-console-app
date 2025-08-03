@@ -1,0 +1,26 @@
+2025-08-03 19:01:53 INFO  org.example.Main - Starting application...
+2025-08-03 19:02:07 INFO  org.example.service.UserService - Creating user with name=user email=user@mail.ru age=26
+2025-08-03 19:02:07 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2025-08-03 19:02:07 INFO  org.hibernate.cfg.Environment - HHH000205: Loaded properties from resource hibernate.properties: {hibernate.connection.driver_class=org.postgresql.Driver, hibernate.format_sql=true, hibernate.hbm2ddl.auto=update, hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect, hibernate.connection.password=****, hibernate.connection.username=postgres, hibernate.connection.url=jdbc:postgresql://localhost:5432/postgres, hibernate.show_sql=true}
+2025-08-03 19:02:07 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-08-03 19:02:07 WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2025-08-03 19:02:07 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2025-08-03 19:02:07 INFO  o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/postgres]
+2025-08-03 19:02:07 INFO  o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2025-08-03 19:02:07 INFO  o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2025-08-03 19:02:07 INFO  o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2025-08-03 19:02:07 WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-03 19:02:07 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-03 19:02:07 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@321ca237] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2025-08-03 19:02:07 INFO  org.example.dao.UserDaoImpl - Saving user: User{id=null, name='user', email='user@mail.ru', age=26, createdAt=2025-08-03T19:02:07.427833}
+2025-08-03 19:02:08 INFO  org.example.dao.UserDaoImpl - User saved with id: 4
+2025-08-03 19:03:06 INFO  org.example.service.UserService - Creating user with name=oleg email=oleg@gmail.com age=12
+2025-08-03 19:03:06 INFO  org.example.dao.UserDaoImpl - Saving user: User{id=null, name='oleg', email='oleg@gmail.com', age=12, createdAt=2025-08-03T19:03:06.769582}
+2025-08-03 19:03:06 INFO  org.example.dao.UserDaoImpl - User saved with id: 5
+2025-08-03 19:03:08 INFO  org.example.service.UserService - Fetching all users
+2025-08-03 19:03:25 INFO  org.example.service.UserService - Deleting user by ID 4
+2025-08-03 19:03:25 INFO  org.example.dao.UserDaoImpl - Deleting user: User{id=4, name='user', email='user@mail.ru', age=26, createdAt=2025-08-03T19:02:07.427833}
+2025-08-03 19:03:28 INFO  org.example.service.UserService - Deleting user by ID 5
+2025-08-03 19:03:28 INFO  org.example.dao.UserDaoImpl - Deleting user: User{id=5, name='oleg', email='oleg@gmail.com', age=12, createdAt=2025-08-03T19:03:06.769582}
+2025-08-03 19:04:53 INFO  org.example.service.UserService - Fetching all users
+2025-08-03 19:04:55 INFO  org.example.Main - Exiting application.
