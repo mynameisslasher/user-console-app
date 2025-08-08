@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.model.User;
 import org.example.util.HibernateUtil;
 import org.hibernate.Session;
@@ -12,8 +13,8 @@ import org.hibernate.HibernateException;
 
 import java.util.List;
 
+@Slf4j
 public class UserDaoImpl implements UserDao {
-    private static final Logger log = LoggerFactory.getLogger(UserDaoImpl.class);
 
     @Override
     public void save(User user) {

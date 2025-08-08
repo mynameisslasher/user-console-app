@@ -13,6 +13,11 @@ public class HibernateUtil {
 
     private static SessionFactory sessionFactory;
 
+    private HibernateUtil() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
+
     static {
         try {
             Configuration configuration = new Configuration();
