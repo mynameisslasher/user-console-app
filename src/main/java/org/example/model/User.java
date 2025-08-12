@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
-@Data // включает: @Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {

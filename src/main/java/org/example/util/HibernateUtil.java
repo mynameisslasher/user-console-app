@@ -45,4 +45,38 @@ public class HibernateUtil {
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
+
+    // Для тестов
+    public static synchronized void rebuildSessionFactory(Properties override) {
+        shutdown();
+        try {
+            Configuration configuration = new Configuration();
+
+            Properties props = new Properties();
+            props.load(HibernateUtil.class.getClassLoader().getResourceAsStream("hibernate.properties"));
+
+            if (override != null) {
+                props.putAll(override);
+            }
+
+            configuration.setProperties(props);
+            configuration.addAnnotatedClass(User.class);
+
+            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                    .applySettings(configuration.getProperties())
+                    .build();
+
+            sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to rebuild SessionFactory for tests", e);
+        }
+    }
+
+    public static synchronized void shutdown() {
+        if (sessionFactory != null && !sessionFactory.isClosed()) {
+            sessionFactory.close();
+        }
+        sessionFactory = null;
+    }
+
 }
